@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styles from "../Signup/Signup.module.css"
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 const Login = () => {
+    const navigate = useNavigate();
     const [userData,setUserData] = useState(
         {
             email:"",
@@ -14,12 +15,13 @@ const Login = () => {
         if(!userDatas){
             userDatas = []
         }
-        if(userDatas.some((obj)=>obj.email==userData.email)){
-            alert("user exists")
-            return
+        if(userDatas.some((obj)=>obj.email==userData.email && obj.password==userData.password)){
+            const user = userData.filter((obj)=>obj.email==userData.email)
+            localStorage.setItem("loggedInUser",JSON.stringify(userData))
+            navigate("/todo")
+        }else{
+            alert("failed")
         }
-        userDatas.push(userData)
-        localStorage.setItem("userDatas",JSON.stringify(userDatas))
     }
   return (
     <div className={styles.mainContainer}>
